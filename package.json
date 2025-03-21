@@ -11,6 +11,8 @@
     "db:studio": "npx drizzle-kit studio"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.12.7",
+    "@clerk/themes": "^2.2.23",
     "@neondatabase/serverless": "^0.10.4",
     "drizzle-orm": "^0.40.1",
     "next": "15.2.3",
