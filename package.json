@@ -16,9 +16,11 @@
     "@neondatabase/serverless": "^0.10.4",
     "drizzle-orm": "^0.40.1",
     "lucide-react": "^0.483.0",
+    "mailtrap": "^4.0.0",
     "next": "15.2.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "svix": "^1.62.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
