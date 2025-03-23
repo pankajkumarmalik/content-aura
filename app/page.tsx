@@ -1,105 +1,207 @@
 import { Navbar } from "@/components/Navbar";
-import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { SignUpButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
+import {
+  ArrowRightIcon,
+  CheckCircleIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  RocketIcon,
+  SparklesIcon,
+  TrendingUpIcon,
+  TwitterIcon,
+  ZapIcon,
+} from "lucide-react";
+import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const { userId } = await auth();
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-gray-100 overflow-hidden pt-20">
       <Navbar />
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+        {/* Decorative elements */}
+        <div className="absolute top-20 left-10 animate-float">
+          <SparklesIcon className="w-8 h-8 text-yellow-400 opacity-50" />
+        </div>
+        <div className="absolute top-40 right-20 animate-float animation-delay-2000">
+          <ZapIcon className="w-10 h-10 text-blue-400 opacity-50" />
+        </div>
+        <div className="absolute bottom-20 left-1/4 animate-float animation-delay-4000">
+          <TrendingUpIcon className="w-12 h-12 text-green-400 opacity-50" />
+        </div>
+
+        {/* Hero Section */}
+        <div className="text-center py-20 lg:py-32 relative">
+          <RocketIcon className="w-16 h-16 text-purple-500 mx-auto mb-6 animate-bounce" />
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+            AI-Powered Social Media Content Generator
+          </h1>
+          <p className="text-xl mb-10 text-gray-300 max-w-2xl mx-auto">
+            Create engaging content for Twitter, Instagram, and LinkedIn with
+            cutting-edge AI technology.
+          </p>
+          <div className="flex justify-center space-x-4">
+            <Button
+              asChild
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105"
+            >
+              <Link href="/generate">Start Creating</Link>
+            </Button>
+            <Button
+              asChild
+              className="bg-transparent border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-3 rounded-full text-lg transition duration-300 ease-in-out"
+            >
+              <Link href="#features">Learn More</Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div className="py-20" id="features">
+          <h2 className="text-3xl font-bold mb-16 text-center text-white">
+            Supercharge Your Social Media Presence
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+            {[
+              {
+                title: "Twitter Threads",
+                icon: <TwitterIcon className="w-10 h-10 mb-4 text-blue-400" />,
+                description:
+                  "Generate compelling Twitter threads that engage your audience and boost your reach.",
+              },
+              {
+                title: "Instagram Captions",
+                icon: (
+                  <InstagramIcon className="w-10 h-10 mb-4 text-pink-400" />
+                ),
+                description:
+                  "Create catchy captions for your Instagram posts that increase engagement and followers.",
+              },
+              {
+                title: "LinkedIn Posts",
+                icon: <LinkedinIcon className="w-10 h-10 mb-4 text-blue-600" />,
+                description:
+                  "Craft professional content for your LinkedIn network to establish thought leadership.",
+              },
+            ].map((feature, index) => (
+              <div
+                key={index}
+                className="p-8 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:-translate-y-3"
+              >
+                <div className="flex flex-col items-center text-center">
+                  {feature.icon}
+                  <h3 className="text-2xl font-semibold mb-3 text-white">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-300">{feature.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Benefits Section */}
+        <div className="py-20 bg-gray-900 rounded-3xl my-20 relative">
+          <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-3xl">
+            <svg
+              className="absolute w-full h-full"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M0,0 L100,0 L100,100 L0,100 Z"
+                fill="url(#grid-pattern)"
+              />
+            </svg>
+            <defs>
+              <pattern
+                id="grid-pattern"
+                width="10"
+                height="10"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 10 0 L 0 0 0 10"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.05)"
+                  strokeWidth="0.5"
+                />
+              </pattern>
+            </defs>
+          </div>
+          <div className="relative z-10">
+            <h2 className="text-3xl font-bold mb-12 text-center text-white">
+              Why Choose Our AI Content Generator?
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {[
+                "Save time and effort on content creation",
+                "Consistently produce high-quality posts",
+                "Increase engagement across all platforms",
+                "Stay ahead of social media trends",
+                "Customize content to match your brand voice",
+                "Scale your social media presence effortlessly",
+              ].map((benefit, index) => (
+                <div key={index} className="flex items-center space-x-3">
+                  <CheckCircleIcon className="w-6 h-6 text-green-500 flex-shrink-0" />
+                  <span className="text-gray-300">{benefit}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center py-20 relative">
+          <div className="absolute top-10 right-10 animate-spin-slow">
+            <svg
+              className="w-20 h-20 text-blue-500 opacity-20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M12 6V12L16 14"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+          <h2 className="text-4xl font-bold mb-8 text-white">
+            Ready to revolutionize your social media strategy?
+          </h2>
+          {userId ? (
+            <Button
+              asChild
+              className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105"
+            >
+              <Link href="/generate">
+                Generate Content Now <ArrowRightIcon className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          ) : (
+            <SignUpButton mode="modal">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105">
+                Get Started Free <ArrowRightIcon className="ml-2 h-5 w-5" />
+              </Button>
+            </SignUpButton>
+          )}
+          <p className="mt-4 text-gray-400">No credit card required</p>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
