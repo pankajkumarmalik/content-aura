@@ -3,41 +3,42 @@
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
-import { loadStripe } from "@stripe/stripe-js";
 import { CheckIcon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner"; // Import ShadCN Sooner toast
 
 const pricingPlans = [
   {
     name: "Basic",
-    price: "9",
-    priceId: "price_1PyFKGBibz3ZDixDAaJ3HO74",
+    price: "0",
+    priceId: "basic_plan",
     features: [
-      "100 AI-generated posts per month",
-      "Twitter thread generation",
+      "10 AI-generated posts",
+      "Generate content for Twitter, Instagram & LinkedIn",
       "Basic analytics",
     ],
   },
   {
     name: "Pro",
     price: "29",
-    priceId: "price_1PyFN0Bibz3ZDixDqm9eYL8W",
+    priceId: null,
     features: [
-      "500 AI-generated posts per month",
-      "Twitter, Instagram, and LinkedIn content",
+      "500 AI-generated posts",
+      "All social media platforms",
       "Advanced analytics",
       "Priority support",
     ],
   },
   {
     name: "Enterprise",
-    price: "Custom",
+    price: "99",
     priceId: null,
     features: [
       "Unlimited AI-generated posts",
       "All social media platforms",
       "Custom AI model training",
       "Dedicated account manager",
+      "API access for automation",
     ],
   },
 ];
@@ -46,38 +47,34 @@ export default function PricingPage() {
   const { isSignedIn, user } = useUser();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubscribe = async (priceId: string) => {
-    if (!isSignedIn) {
-      return;
-    }
+  const handleBasicPlan = async () => {
+    if (!isSignedIn || !user) return;
 
     setIsLoading(true);
     try {
-      const response = await fetch("/api/create-checkout-session", {
+      const response = await fetch("/api/update-user-points", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          priceId,
-          userId: user?.id,
-        }),
+        body: JSON.stringify({ userId: user.id, points: 50 }),
       });
+
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to create checkout session");
+        throw new Error(errorData.error || "Failed to update points");
       }
 
-      const { sessionId } = await response.json();
-      const stripe = await loadStripe(
-        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-      );
-      if (!stripe) {
-        throw new Error("Failed to load Stripe");
-      }
-      await stripe.redirectToCheckout({ sessionId });
+      toast.success("50 credits added to your account!", {
+        description: "Enjoy your rewards 🎉",
+        duration: 3000, // Toast disappears after 3 seconds
+      });
     } catch (error) {
-      console.error("Error creating checkout session:", error);
+      console.error("Error updating user points:", error);
+
+      toast.error("Failed to update points.", {
+        description: "Please try again later.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -116,13 +113,22 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Button
-                // onClick={() => plan.priceId && handleSubscribe(plan.priceId)}
-                // disabled={isLoading || !plan.priceId}
-                className="w-full bg-white text-black hover:bg-gray-200"
-              >
-                {isLoading ? "Processing..." : "Choose Plan"}
-              </Button>
+              {plan.priceId === "basic_plan" ? (
+                <Button
+                  onClick={handleBasicPlan}
+                  disabled={isLoading}
+                  className="w-full bg-white text-black hover:bg-gray-200"
+                >
+                  {isLoading ? "Processing..." : "Choose Plan"}
+                </Button>
+              ) : (
+                <Button
+                  disabled
+                  className="w-full bg-gray-700 text-gray-400 cursor-not-allowed"
+                >
+                  Currently not available
+                </Button>
+              )}
             </div>
           ))}
         </div>
