@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import { CheckIcon } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner"; // Import ShadCN Sooner toast
+import { toast } from "sonner";
 
 const pricingPlans = [
   {
@@ -67,7 +67,7 @@ export default function PricingPage() {
 
       toast.success("50 credits added to your account!", {
         description: "Enjoy your rewards 🎉",
-        duration: 3000, // Toast disappears after 3 seconds
+        duration: 3000,
       });
     } catch (error) {
       console.error("Error updating user points:", error);

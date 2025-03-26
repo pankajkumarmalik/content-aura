@@ -80,9 +80,7 @@ export default function GenerateContent() {
   }, []);
 
   useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push("/");
-    } else if (isSignedIn && user) {
+    if (isSignedIn && user) {
       console.log("User loaded:", user);
       fetchUserPoints();
       fetchContentHistory();
@@ -250,7 +248,11 @@ export default function GenerateContent() {
   };
 
   if (!isLoaded) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen w-full bg-gray-900">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+      </div>
+    );
   }
 
   if (!isSignedIn) {
@@ -258,7 +260,7 @@ export default function GenerateContent() {
       <div className="flex items-center justify-center min-h-screen bg-[#0a0a0a]">
         <div className="text-center bg-[#111111] p-8 rounded-lg shadow-lg">
           <h1 className="text-3xl font-bold text-white mb-4">
-            Welcome to ThreadCraft AI
+            Welcome to ContentAura
           </h1>
           <p className="text-gray-400 mb-6">
             To start generating amazing content, please sign in or create an

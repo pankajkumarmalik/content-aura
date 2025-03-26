@@ -1,5 +1,5 @@
 import React from "react";
-import { Twitter, Heart, MessageCircle, Repeat, Share } from "lucide-react";
+import { Heart, MessageCircle, Repeat, Share } from "lucide-react";
 
 interface TwitterMockProps {
   content: string[];
