@@ -1,9 +1,10 @@
 "use server";
 
-import { sendWelcomeEmail } from "../mailtrap";
+import EmailTemplate from "@/emails/template";
 import { db } from "./dbConfig";
 import { Users, GeneratedContent } from "./schema";
-import { eq, sql, and, desc } from "drizzle-orm";
+import { eq, sql, desc } from "drizzle-orm";
+import { sendEmail } from "@/app/api/send/route";
 //import { sendWelcomeEmail, initMailtrap } from "../mailtrap";
 
 export async function updateUserPoints(userId: string, points: number) {
@@ -136,7 +137,12 @@ export async function createOrUpdateUser(
         .returning()
         .execute();
       console.log("Updated user:", updatedUser);
-      sendWelcomeEmail(email, name);
+      //sendWelcomeEmail(email, name);
+      // await sendEmail({
+      //   to: email,
+      //   subject: "Welcome to ContentAura!",
+      //   react: EmailTemplate({ name: String(name ?? "User") }),
+      // });
       return updatedUser;
     }
 
@@ -146,7 +152,12 @@ export async function createOrUpdateUser(
       .returning()
       .execute();
     console.log("New user created:", newUser);
-    sendWelcomeEmail(email, name);
+    //sendWelcomeEmail(email, name);
+    // await sendEmail({
+    //   to: email,
+    //   subject: "Welcome to ContentAura!",
+    //   react: EmailTemplate({ name: String(name ?? "User") }),
+    // });
     return newUser;
   } catch (error) {
     console.error("Error creating or updating user:", error);

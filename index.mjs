@@ -1,6 +1,6 @@
 import { MailtrapClient } from "mailtrap";
 
-const TOKEN = process.env.MAILTRAP_API_TOKEN;
+const TOKEN = MAILTRAP_API_TOKEN;
 const SENDER_EMAIL = "hello@demomailtrap.co";
 const RECIPIENT_EMAIL = "pankajkumarmalik30@gmail.com";
 
