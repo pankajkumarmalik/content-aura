@@ -33,8 +33,9 @@ const DocsPage = () => {
               </li>
 
               <li>
-                <strong>Generate Content:</strong> Click the 'Generate' button
-                and let AI craft high-quality content.
+                <strong>Generate Content:</strong> Click the{" "}
+                <strong>&apos;Generate&apos;</strong> button and let AI craft
+                high-quality content.
               </li>
               <li>
                 <strong>Preview & Edit:</strong> Review and make quick edits if
