@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
@@ -14,7 +15,7 @@ const pricingPlans = [
     priceId: "basic_plan",
     features: [
       "10 AI-generated posts",
-      "Generate content for Twitter, Instagram & LinkedIn",
+      "Twitter, Instagram & LinkedIn",
       "Basic analytics",
     ],
   },
@@ -81,9 +82,9 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-gray-100">
+    <div className="min-h-screen flex flex-col bg-black text-gray-100">
       <Navbar />
-      <main className="container mx-auto px-8 py-20">
+      <main className="container mx-auto px-8 py-20 flex-grow min-h-screen">
         <h1 className="text-5xl font-bold mb-12 text-center text-white">
           Pricing Plans
         </h1>
@@ -133,6 +134,7 @@ export default function PricingPage() {
           ))}
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

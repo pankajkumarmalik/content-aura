@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
         <body className={`${inter.className} bg-black text-white antialiased`}>
           {children}
           <Toaster richColors theme="dark" />
+          {/* <Footer /> */}
         </body>
       </html>
     </ClerkProvider>

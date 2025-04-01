@@ -40,6 +40,7 @@ import { InstagramMock } from "@/components/social-mocks/InstagramMock";
 import { LinkedInMock } from "@/components/social-mocks/LinkedInMock";
 import Link from "next/link";
 import { toast } from "sonner";
+import Footer from "@/components/Footer";
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
@@ -290,9 +291,9 @@ export default function GenerateContent() {
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 to-black min-h-screen text-white">
+    <div className="bg-gradient-to-br from-gray-900 to-black min-h-screen text-white flex flex-col">
       <Navbar />
-      <div className="container mx-auto px-4 mb-8 sm:px-6 lg:px-8 py-8">
+      <div className="container mx-auto px-4 mb-8 sm:px-6 lg:px-8 py-8 flex-grow min-h-screen">
         <div className="grid grid-cols-1 mt-14 lg:grid-cols-3 gap-8">
           {/* Left Sidebar - Collapsible History for Mobile/Tablets */}
           <div className="lg:col-span-1">
@@ -540,6 +541,7 @@ export default function GenerateContent() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

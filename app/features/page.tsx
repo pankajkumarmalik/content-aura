@@ -9,6 +9,7 @@ import { Navbar } from "@/components/Navbar";
 import Link from "next/link";
 import { SignUpButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
+import Footer from "@/components/Footer";
 
 export default async function FeaturesPage() {
   const { userId } = await auth();
@@ -89,6 +90,8 @@ export default async function FeaturesPage() {
           <p className="mt-4 text-gray-400">No credit card required</p>
         </div>
       </main>
+
+      <Footer footerColor="bg-gradient-to-r from-[#0a0f1f] to-[#121826]" />
     </div>
   );
 }

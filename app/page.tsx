@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { SignUpButton } from "@clerk/nextjs";
@@ -202,6 +203,8 @@ export default async function Home() {
           <p className="mt-4 text-gray-400">No credit card required</p>
         </div>
       </main>
+
+      <Footer footerColor="bg-gradient-to-r from-[#0a0f1f] to-[#121826]" />
     </div>
   );
 }
