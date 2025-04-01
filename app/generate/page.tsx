@@ -41,6 +41,7 @@ import { LinkedInMock } from "@/components/social-mocks/LinkedInMock";
 import Link from "next/link";
 import { toast } from "sonner";
 import Footer from "@/components/Footer";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
@@ -73,6 +74,7 @@ export default function GenerateContent() {
   const [image, setImage] = useState<File | null>(null);
   const [userPoints, setUserPoints] = useState<number | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
   const [selectedHistoryItem, setSelectedHistoryItem] =
     useState<HistoryItem | null>(null);
 
@@ -115,7 +117,9 @@ export default function GenerateContent() {
 
   const fetchContentHistory = async () => {
     if (user?.id) {
+      setHistoryLoading(true);
       const contentHistory = await getGeneratedContentHistory(user.id);
+      setHistoryLoading(false);
       setHistory(contentHistory);
     }
   };
@@ -328,35 +332,52 @@ export default function GenerateContent() {
               </div>
 
               <div className="space-y-4">
-                {history.map((item) => (
-                  <div
-                    key={item.id}
-                    className="p-4 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors cursor-pointer"
-                    onClick={() => handleHistoryItemClick(item)}
-                  >
-                    <div className="flex items-center mb-2">
-                      {item.contentType === "twitter" && (
-                        <Twitter className="mr-2 h-5 w-5 text-blue-400" />
-                      )}
-                      {item.contentType === "instagram" && (
-                        <Instagram className="mr-2 h-5 w-5 text-pink-400" />
-                      )}
-                      {item.contentType === "linkedin" && (
-                        <Linkedin className="mr-2 h-5 w-5 text-blue-600" />
-                      )}
-                      <span className="text-sm font-medium">
-                        {item.contentType}
-                      </span>
+                {historyLoading ? (
+                  // Show skeleton loader when history is loading
+                  <>
+                    <Skeleton className="p-4 h-25 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors" />
+                    <Skeleton className="p-4 h-25 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors" />
+                    <Skeleton className="p-4 h-25 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors" />
+                    <Skeleton className="p-4 h-25 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors" />
+                    <Skeleton className="p-4 h-25 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors" />
+                  </>
+                ) : history.length > 0 ? (
+                  // Render history items if history is available
+                  history.map((item) => (
+                    <div
+                      key={item.id}
+                      className="p-4 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors cursor-pointer"
+                      onClick={() => handleHistoryItemClick(item)}
+                    >
+                      <div className="flex items-center mb-2">
+                        {item.contentType === "twitter" && (
+                          <Twitter className="mr-2 h-5 w-5 text-blue-400" />
+                        )}
+                        {item.contentType === "instagram" && (
+                          <Instagram className="mr-2 h-5 w-5 text-pink-400" />
+                        )}
+                        {item.contentType === "linkedin" && (
+                          <Linkedin className="mr-2 h-5 w-5 text-blue-600" />
+                        )}
+                        <span className="text-sm font-medium">
+                          {item.contentType}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-300 truncate">
+                        {item.prompt}
+                      </p>
+                      <div className="flex items-center text-xs text-gray-400 mt-2">
+                        <Clock className="mr-1 h-3 w-3" />
+                        {new Date(item.createdAt).toLocaleString()}
+                      </div>
                     </div>
-                    <p className="text-sm text-gray-300 truncate">
-                      {item.prompt}
-                    </p>
-                    <div className="flex items-center text-xs text-gray-400 mt-2">
-                      <Clock className="mr-1 h-3 w-3" />
-                      {new Date(item.createdAt).toLocaleString()}
-                    </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  // Show message if history is empty
+                  <p className="text-gray-400 text-sm text-center">
+                    No history available.
+                  </p>
+                )}
               </div>
             </div>
           </div>
