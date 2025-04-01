@@ -20,6 +20,8 @@ import {
   Linkedin,
   Clock,
   Zap,
+  ChevronUp,
+  ChevronDown,
 } from "lucide-react";
 import { GoogleGenerativeAI, Part } from "@google/generative-ai";
 import ReactMarkdown from "react-markdown";
@@ -72,6 +74,8 @@ export default function GenerateContent() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [selectedHistoryItem, setSelectedHistoryItem] =
     useState<HistoryItem | null>(null);
+
+  const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     if (!apiKey) {
@@ -290,42 +294,69 @@ export default function GenerateContent() {
       <Navbar />
       <div className="container mx-auto px-4 mb-8 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 mt-14 lg:grid-cols-3 gap-8">
-          {/* Left sidebar - History */}
-          <div className="lg:col-span-1 bg-gray-800 rounded-2xl p-6 h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-semibold text-blue-400">History</h2>
-              <Clock className="h-6 w-6 text-blue-400" />
-            </div>
-            <div className="space-y-4">
-              {history.map((item) => (
-                <div
-                  key={item.id}
-                  className="p-4 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors cursor-pointer"
-                  onClick={() => handleHistoryItemClick(item)}
-                >
-                  <div className="flex items-center mb-2">
-                    {item.contentType === "twitter" && (
-                      <Twitter className="mr-2 h-5 w-5 text-blue-400" />
-                    )}
-                    {item.contentType === "instagram" && (
-                      <Instagram className="mr-2 h-5 w-5 text-pink-400" />
-                    )}
-                    {item.contentType === "linkedin" && (
-                      <Linkedin className="mr-2 h-5 w-5 text-blue-600" />
-                    )}
-                    <span className="text-sm font-medium">
-                      {item.contentType}
-                    </span>
+          {/* Left Sidebar - Collapsible History for Mobile/Tablets */}
+          <div className="lg:col-span-1">
+            {/* Toggle Button for Mobile */}
+            <button
+              className="w-full p-2 bg-gray-700 text-white rounded-lg sm:hidden flex items-center justify-between"
+              onClick={() => setShowHistory(!showHistory)}
+            >
+              <span className="text-lg font-medium">
+                {showHistory ? "Hide History" : "Show History"}
+              </span>
+              <div className="flex items-center">
+                {showHistory ? (
+                  <ChevronUp className="h-7 w-7 ml-2" />
+                ) : (
+                  <ChevronDown className="h-7 w-7 ml-2" />
+                )}
+              </div>
+            </button>
+
+            {/* History Section (Collapsible on Mobile) */}
+            <div
+              className={`bg-gray-800 rounded-2xl p-6 overflow-y-auto scrollbar-hide transition-all ${
+                showHistory ? "h-64" : "hidden"
+              } sm:h-[calc(100vh-12rem)] sm:block`}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-semibold text-blue-400">
+                  History
+                </h2>
+                <Clock className="h-6 w-6 text-blue-400" />
+              </div>
+
+              <div className="space-y-4">
+                {history.map((item) => (
+                  <div
+                    key={item.id}
+                    className="p-4 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors cursor-pointer"
+                    onClick={() => handleHistoryItemClick(item)}
+                  >
+                    <div className="flex items-center mb-2">
+                      {item.contentType === "twitter" && (
+                        <Twitter className="mr-2 h-5 w-5 text-blue-400" />
+                      )}
+                      {item.contentType === "instagram" && (
+                        <Instagram className="mr-2 h-5 w-5 text-pink-400" />
+                      )}
+                      {item.contentType === "linkedin" && (
+                        <Linkedin className="mr-2 h-5 w-5 text-blue-600" />
+                      )}
+                      <span className="text-sm font-medium">
+                        {item.contentType}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-300 truncate">
+                      {item.prompt}
+                    </p>
+                    <div className="flex items-center text-xs text-gray-400 mt-2">
+                      <Clock className="mr-1 h-3 w-3" />
+                      {new Date(item.createdAt).toLocaleString()}
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-300 truncate">
-                    {item.prompt}
-                  </p>
-                  <div className="flex items-center text-xs text-gray-400 mt-2">
-                    <Clock className="mr-1 h-3 w-3" />
-                    {new Date(item.createdAt).toLocaleString()}
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
 
