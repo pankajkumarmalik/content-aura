@@ -138,6 +138,7 @@ export default function GenerateContent() {
     }
 
     setIsLoading(true);
+    setSelectedHistoryItem(null);
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
@@ -150,7 +151,7 @@ export default function GenerateContent() {
 
       if (contentType === "linkedin") {
         promptText +=
-          " Generate a single, well-written LinkedIn post that is professional, engaging, concise. Do not provide multiple options. The post should feel natural, like it was written by a human, and should avoid generic corporate jargon. Strictly return only the post itself—without any introductions, explanations, disclaimers, or extra text.";
+          " Generate a single, well-written LinkedIn post that is professional, engaging. Do not provide multiple options. The post should feel natural, like it was written by a human, and should avoid generic corporate jargon. Strictly return only the post itself—without any introductions, explanations, disclaimers, strictly no extra text in starting like 'Okay, here's that LinkedIn post:' etc. Write it in a well structured way";
       }
 
       let imagePart: Part | null = null;
@@ -187,12 +188,14 @@ export default function GenerateContent() {
       const generatedText = result.response.text();
 
       let content: string[];
+
       if (contentType === "twitter") {
         content = generatedText
-          .split("\n\n")
+          .split("\n\n") // Splitting for Twitter threads
           .filter((tweet) => tweet.trim() !== "");
       } else {
-        content = [generatedText];
+        // Ensure paragraphs and lists are rendered correctly in LinkedIn
+        content = [generatedText.trim()];
       }
 
       setGeneratedContent(content);
@@ -333,7 +336,7 @@ export default function GenerateContent() {
 
               <div className="space-y-4">
                 {historyLoading ? (
-                  // Show skeleton loader when history is loading
+                  //skeleton loader when history is loading
                   <>
                     <Skeleton className="p-4 h-25 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors" />
                     <Skeleton className="p-4 h-25 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors" />
@@ -342,7 +345,6 @@ export default function GenerateContent() {
                     <Skeleton className="p-4 h-25 bg-gray-700 rounded-xl hover:bg-gray-600 transition-colors" />
                   </>
                 ) : history.length > 0 ? (
-                  // Render history items if history is available
                   history.map((item) => (
                     <div
                       key={item.id}
@@ -537,13 +539,27 @@ export default function GenerateContent() {
                     ))}
                   </div>
                 ) : (
-                  <div className="bg-gray-700 p-4 rounded-xl">
+                  <div className="bg-gray-700 p-4 rounded-xl relative">
                     <div className="prose prose-invert max-w-none text-sm">
                       <ReactMarkdown>
                         {selectedHistoryItem
                           ? selectedHistoryItem.content
                           : generatedContent[0]}
                       </ReactMarkdown>
+                    </div>
+                    <div className="flex justify-end text-gray-400 text-xs mt-2">
+                      <Button
+                        onClick={() =>
+                          copyToClipboard(
+                            selectedHistoryItem
+                              ? selectedHistoryItem.content
+                              : generatedContent[0]
+                          )
+                        }
+                        className="bg-gray-600 hover:bg-gray-500 text-white rounded-full p-2 transition-colors"
+                      >
+                        <Copy className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                 )}

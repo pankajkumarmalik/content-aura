@@ -1,4 +1,5 @@
 import React from "react";
+import ReactMarkdown from "react-markdown";
 import { ThumbsUp, MessageSquare, Repeat, Send } from "lucide-react";
 
 interface LinkedInMockProps {
@@ -15,8 +16,11 @@ export const LinkedInMock: React.FC<LinkedInMockProps> = ({ content }) => {
           <p className="text-gray-500 text-sm">Your Title • 1st</p>
         </div>
       </div>
-      <p className="mb-4">{content}</p>
-      <div className="flex justify-between text-gray-500">
+      {/* ✅ Fix: Use ReactMarkdown to properly format the LinkedIn post */}
+      <div className="prose prose-sm prose-p:mb-3 prose-li:ml-5 prose-li:marker:text-black text-black">
+        <ReactMarkdown>{content}</ReactMarkdown>
+      </div>
+      <div className="flex justify-between text-gray-500 mt-3">
         <ThumbsUp size={18} />
         <MessageSquare size={18} />
         <Repeat size={18} />
