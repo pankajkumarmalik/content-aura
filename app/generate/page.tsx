@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -79,6 +79,8 @@ export default function GenerateContent() {
     useState<HistoryItem | null>(null);
 
   const [showHistory, setShowHistory] = useState(false);
+
+  const generatedContentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!apiKey) {
@@ -238,6 +240,14 @@ export default function GenerateContent() {
         ? item.content.split("\n\n")
         : [item.content]
     );
+
+    // Scroll to the generated content section smoothly
+    setTimeout(() => {
+      generatedContentRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
   };
 
   const copyToClipboard = (text: string) => {
@@ -507,7 +517,10 @@ export default function GenerateContent() {
 
             {/* Generated content display */}
             {(selectedHistoryItem || generatedContent.length > 0) && (
-              <div className="bg-gray-800 p-6 rounded-2xl space-y-4">
+              <div
+                ref={generatedContentRef}
+                className="bg-gray-800 p-6 rounded-2xl space-y-4"
+              >
                 <h2 className="text-2xl font-semibold text-blue-400">
                   {selectedHistoryItem ? "History Item" : "Generated Content"}
                 </h2>
