@@ -252,6 +252,10 @@ export default function GenerateContent() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
+    toast.success("Copied!", {
+      description: "Text copied to clipboard successfully.",
+      duration: 3000,
+    });
   };
 
   const renderContentMock = () => {
